@@ -12,6 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building Hospital Management Application...'
+
                 bat 'mvn clean package -DskipTests'
             }
         }
@@ -31,6 +32,7 @@ pipeline {
         stage('Selenium Tests') {
             steps {
                 echo 'Running Selenium Tests...'
+
                 bat 'mvn test'
             }
         }
@@ -47,7 +49,7 @@ pipeline {
 
         stage('Docker Push') {
             steps {
-                echo 'Pushing Docker image to Docker Hub...'
+                echo 'Logging in to Docker Hub and pushing image...'
 
                 withCredentials([
                     usernamePassword(
@@ -56,10 +58,21 @@ pipeline {
                         passwordVariable: 'DOCKER_PASSWORD'
                     )
                 ]) {
+
                     bat '''
                         echo %DOCKER_PASSWORD% | C:\\Users\\Home\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe login -u %DOCKER_USERNAME% --password-stdin
 
+                        if errorlevel 1 (
+                            echo Docker Hub login failed.
+                            exit /b 1
+                        )
+
                         C:\\Users\\Home\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe push %DOCKER_USERNAME%/hospital-management:latest
+
+                        if errorlevel 1 (
+                            echo Docker image push failed.
+                            exit /b 1
+                        )
 
                         C:\\Users\\Home\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe logout
                     '''
@@ -69,6 +82,7 @@ pipeline {
     }
 
     post {
+
         always {
             echo 'Pipeline execution completed.'
         }
