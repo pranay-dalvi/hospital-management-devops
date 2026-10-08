@@ -44,6 +44,28 @@ pipeline {
                 '''
             }
         }
+
+        stage('Docker Push') {
+            steps {
+                echo 'Pushing Docker image to Docker Hub...'
+
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub-credentials',
+                        usernameVariable: 'DOCKER_USERNAME',
+                        passwordVariable: 'DOCKER_PASSWORD'
+                    )
+                ]) {
+                    bat '''
+                        echo %DOCKER_PASSWORD% | C:\\Users\\Home\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe login -u %DOCKER_USERNAME% --password-stdin
+
+                        C:\\Users\\Home\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe push %DOCKER_USERNAME%/hospital-management:latest
+
+                        C:\\Users\\Home\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe logout
+                    '''
+                }
+            }
+        }
     }
 
     post {
