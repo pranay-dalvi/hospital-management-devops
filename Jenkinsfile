@@ -34,6 +34,16 @@ pipeline {
                 bat 'mvn test'
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                echo 'Building Docker image...'
+
+                bat '''
+                    C:\\Users\\Home\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe build -t pranay1602/hospital-management:latest .
+                '''
+            }
+        }
     }
 
     post {
