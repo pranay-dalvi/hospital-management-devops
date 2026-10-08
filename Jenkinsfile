@@ -60,7 +60,7 @@ pipeline {
                 ]) {
 
                     bat '''
-                        echo %DOCKER_PASSWORD% | C:\\Users\\Home\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe login -u %DOCKER_USERNAME% --password-stdin
+                        powershell -NoProfile -NonInteractive -Command "$env:DOCKER_PASSWORD | & 'C:\\Users\\Home\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe' login -u $env:DOCKER_USERNAME --password-stdin"
 
                         if errorlevel 1 (
                             echo Docker Hub login failed.
