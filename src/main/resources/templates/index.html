@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Hospital Management System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #aaa;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .success {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #e8f5e9;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Hospital Management System</h1>
+
+    <form action="/register" method="post">
+
+        <label>Patient Name</label>
+        <input type="text"
+               id="name"
+               name="name"
+               required>
+
+        <label>Age</label>
+        <input type="number"
+               id="age"
+               name="age"
+               required>
+
+        <label>Disease</label>
+        <input type="text"
+               id="disease"
+               name="disease"
+               required>
+
+        <button type="submit" id="registerButton">
+            Register Patient
+        </button>
+
+    </form>
+
+    <div class="success"
+         id="successMessage"
+         th:if="${registered}">
+
+        <h3>Patient Registered Successfully!</h3>
+
+        <p>
+            Patient Name:
+            <span id="patientName" th:text="${name}"></span>
+        </p>
+
+        <p>
+            Age:
+            <span id="patientAge" th:text="${age}"></span>
+        </p>
+
+        <p>
+            Disease:
+            <span id="patientDisease" th:text="${disease}"></span>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
